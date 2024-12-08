@@ -35,7 +35,7 @@ export default function App() {
                         headerStyle: {backgroundColor: '#1E1E1E'},
                         headerTintColor: '#fff',
                         headerTitleStyle: {fontWeight: 'bold'},
-                        title: 'Crear Account',
+                        title: 'Crear cuenta',
                     }}
                 />
             </Stack.Navigator>
