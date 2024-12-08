@@ -71,6 +71,7 @@ export function LoginScreen() {
                     placeholderTextColor="#A9A9A9"
                     secureTextEntry={true}
                     autoCorrect={false}
+                    autoCapitalize='none'
                 />
                 <TouchableOpacity style={styles.button} onPress={handleSignIn}>
                     <Text style={styles.buttonText}>Iniciar sesión</Text>

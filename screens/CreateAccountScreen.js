@@ -37,7 +37,7 @@ export function CreateAccountScreen() {
                     keyboardType="password"
                     autoCapitalize="none"
                     secureTextEntry={true}
-                    autoCorrect="none"
+                    autoCorrect={false}
                 />
                 <TextInput
                     style = {[styles.input, {borderColor: isCorrectPassword ? '#FFFFFF': '#EF3727'}]}
@@ -48,7 +48,7 @@ export function CreateAccountScreen() {
                     keyboardType="password"
                     autoCapitalize="none"
                     secureTextEntry={true}
-                    autoCorrect="none"
+                    autoCorrect={false}
                 />
                 {!isCorrectPassword && (
                     <Text style={{ color: '#EF3727', marginTop: 5, fontSize: 14 }}>
