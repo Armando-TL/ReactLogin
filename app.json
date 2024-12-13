@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "login",
-    "slug": "login",
+    "name": "fit",
+    "slug": "fit",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,16 +13,24 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "dev.armando.fit"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "dev.armando.fit"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f38326ee-c9fb-4814-8c4d-c9bbbdd7d314"
+      }
+    },
+    "scheme": "fit"
   }
 }
