@@ -6,6 +6,7 @@ import {LoginScreen} from "./screens/LoginScreen";
 import {HomeScreen} from "./screens/HomeScreen";
 import {CreateAccountScreen} from "./screens/CreateAccountScreen";
 import {GoogleSignin} from "@react-native-google-signin/google-signin";
+import {StatusBar} from "expo-status-bar";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ export default function App() {
     }, []);
     return (
         <NavigationContainer>
+            <StatusBar style="light"/>
             <Stack.Navigator initialRouteName="Login">
                 <Stack.Screen
                     name="Login"

@@ -1,30 +1,17 @@
 import React, {useEffect, useState} from "react";
 import {useNavigation} from "@react-navigation/native";
-import {initializeApp,  } from "firebase/app";
+import {initializeApp,} from "firebase/app";
 import {firebaseConfig} from "../firebaseConfig";
 import {getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithCredential} from "firebase/auth";
-import {
-    ActivityIndicator,
-    Alert,
-    Dimensions,
-    Image, Keyboard,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity, TouchableWithoutFeedback,
-    View,
-} from "react-native";
+import { ActivityIndicator, Image, Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import {StatusBar} from "expo-status-bar";
-import {GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin";
+import {GoogleSignin, statusCodes} from "@react-native-google-signin/google-signin";
 import 'firebase/firestore';
 import {FullWindowOverlay} from "react-native-screens";
 
 
-const provider = new GoogleAuthProvider();
-const app = initializeApp(firebaseConfig); // Inicializa la aplicación de Firebase
-const auth = getAuth(app); // Obtiene la instancia de autenticación
-
-const {width} = Dimensions.get('window');
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 export function LoginScreen() {
 
@@ -41,20 +28,17 @@ export function LoginScreen() {
 
 
     const signInWithGoogle = async () => {
-        Keyboard.dismiss(); // Ocultar teclado
-
+        setIsLoading(true);
+        Keyboard.dismiss();
         try {
             await GoogleSignin.signOut();
 
-            const response = await GoogleSignin.signIn();
-            const {idToken} = await GoogleSignin.getCurrentUser();
-            console.log(idToken);
+            const {data} = await GoogleSignin.signIn();
+            const idToken = data.idToken
             const googleCredential = GoogleAuthProvider.credential(idToken);
-            console.log("googleCredential", googleCredential);
-            const result = await signInWithCredential(auth ,googleCredential);
-
+            const result = await signInWithCredential(auth, googleCredential); // Guardar en firebase
             console.log('Usuario autenticado con Google');
-            navigation.navigate('Home');
+            navigation.popTo('Home');
         } catch (error) {
             if (error.code === statusCodes.SIGN_IN_CANCELLED) {
                 console.log('El usuario canceló el inicio de sesión');
@@ -63,6 +47,8 @@ export function LoginScreen() {
             } else {
                 console.log('Error al iniciar sesión con Google', error.message);
             }
+        }finally {
+            setIsLoading(false);
         }
     };
 
@@ -75,7 +61,7 @@ export function LoginScreen() {
 
     useEffect(() => {
         setErrorPass(password === passUse);
-    },[password]);
+    }, [password]);
 
     const handleSignIn = () => {
 
@@ -90,72 +76,71 @@ export function LoginScreen() {
                 console.log('Error de contraseña');
             }
 
-        }).finally( () =>
+        }).finally(() =>
             setIsLoading(false)
         );
     }
 
     return (
-            <View style={styles.container}>
-                <StatusBar style="light"/>
-                {isLoading && (
-                    <FullWindowOverlay style={styles.overlay}>
-                        <ActivityIndicator size="large" color="#FFFF"/>
-                    </FullWindowOverlay>
-                )}
-                <View style={styles.header}>
-                    <Text style={styles.title}>Bienvenido</Text>
-                    <Text style={styles.subtitle}>Inicia sesión para continuar</Text>
-                </View>
-                <View style={styles.form}>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={setEmail}
-                        value={email}
-                        placeholder="Correo electrónico"
-                        placeholderTextColor="#A9A9A9"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                    />
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={setPassword}
-                        value={password}
-                        placeholder="Contraseña"
-                        placeholderTextColor="#A9A9A9"
-                        secureTextEntry={true}
-                        autoCorrect={false}
-                        autoCapitalize='none'
-                    />
-                    {
-                        errorPass && (
-                            <Text style={styles.errorMessage}>Contraseña incorrecta</Text>
-                        )
-                    }
-                    <TouchableOpacity style={styles.button} onPress={handleSignIn}>
-                        <Text style={styles.buttonText}>Iniciar sesión</Text>
-                    </TouchableOpacity>
-                    <View style={styles.separator}>
-                        <View style={styles.line}/>
-                        <Text style={styles.separatorText}>O</Text>
-                        <View style={styles.line}/>
-                    </View>
-                    <TouchableOpacity style={styles.googleButton} onPress={signInWithGoogle}>
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <Image
-                                source={require('../assets/google-logo.png')}
-                                style={{width: 35, height: 35, marginRight: 8}}
-                            />
-                            <Text style={{color: '#555', fontSize: 16, fontWeight: 'bold'}}>Continuar con Google</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.createAccountButton} onPress={() => (
-                        navigation.navigate('CreateAccount')
-                    )}>
-                        <Text style={styles.createAccountText}>Crear cuenta</Text>
-                    </TouchableOpacity>
-                </View>
+        <View style={styles.container}>
+            {isLoading && (
+                <FullWindowOverlay style={styles.overlay}>
+                    <ActivityIndicator size="large" color="#FFFF"/>
+                </FullWindowOverlay>
+            )}
+            <View style={styles.header}>
+                <Text style={styles.title}>Bienvenido</Text>
+                <Text style={styles.subtitle}>Inicia sesión para continuar</Text>
             </View>
+            <View style={styles.form}>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setEmail}
+                    value={email}
+                    placeholder="Correo electrónico"
+                    placeholderTextColor="#A9A9A9"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setPassword}
+                    value={password}
+                    placeholder="Contraseña"
+                    placeholderTextColor="#A9A9A9"
+                    secureTextEntry={true}
+                    autoCorrect={false}
+                    autoCapitalize='none'
+                />
+                {
+                    errorPass && (
+                        <Text style={styles.errorMessage}>Contraseña incorrecta</Text>
+                    )
+                }
+                <TouchableOpacity style={styles.button} onPress={handleSignIn}>
+                    <Text style={styles.buttonText}>Iniciar sesión</Text>
+                </TouchableOpacity>
+                <View style={styles.separator}>
+                    <View style={styles.line}/>
+                    <Text style={styles.separatorText}>O</Text>
+                    <View style={styles.line}/>
+                </View>
+                <TouchableOpacity style={styles.googleButton} onPress={signInWithGoogle}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <Image
+                            source={require('../assets/google-logo.png')}
+                            style={{width: 35, height: 35, marginRight: 8}}
+                        />
+                        <Text style={{color: '#555', fontSize: 16, fontWeight: 'bold'}}>Continuar con Google</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.createAccountButton} onPress={() => (
+                    navigation.navigate('CreateAccount')
+                )}>
+                    <Text style={styles.createAccountText}>Crear cuenta</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
 
     );
 }
@@ -288,7 +273,5 @@ const styles = StyleSheet.create({
         marginTop: 5,
         fontSize: 14
     }
-
-
 });
 

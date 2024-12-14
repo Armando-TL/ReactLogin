@@ -1,12 +1,11 @@
 import {Text, View, StyleSheet, TextInput, TouchableOpacity, Alert, ActivityIndicator} from "react-native";
 import React, {useEffect, useState} from "react";
-import {createUserWithEmailAndPassword, getAuth, fetchSignInMethodsForEmail} from "firebase/auth";
+import {createUserWithEmailAndPassword, getAuth} from "firebase/auth";
 import {initializeApp} from "firebase/app";
 import {firebaseConfig} from "../firebaseConfig";
 import {FullWindowOverlay} from "react-native-screens";
 
 export function CreateAccountScreen() {
-
 
     const [email, setEmail] = useState("");
     const [_password, _setPassword] = useState("");
@@ -28,22 +27,22 @@ export function CreateAccountScreen() {
     const auth = getAuth(app);
     const handleCreateUser = () => {
         setIsLoading(true); // Activa el indicador de carga al inicio
-                createUserWithEmailAndPassword(auth, email, password)
-                    .then((userCredential) => {
-                        const user = userCredential.user;
-                        console.log(user);
-                        Alert.alert("¡Éxito!", "Usuario creado con éxito.");
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                        Alert.alert("Error", error.message);
-                        if (error.code === 'auth/email-already-in-use') {
-                            setEmailInUse(true);
-                        }else if (error.code === 'auth/invalid-email') {
-                            Alert.alert("Error", "El formato del correo electrónico no es válido.");
-                        }
-                    });
-            }
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log(user);
+                Alert.alert("¡Éxito!", "Usuario creado con éxito.");
+            })
+            .catch((error) => {
+                console.error(error);
+                Alert.alert("Error", error.message);
+                if (error.code === 'auth/email-already-in-use') {
+                    setEmailInUse(true);
+                } else if (error.code === 'auth/invalid-email') {
+                    Alert.alert("Error", "El formato del correo electrónico no es válido.");
+                }
+            });
+    }
 
 
     return (
