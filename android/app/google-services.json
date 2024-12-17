@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "452930975227",
+    "project_id": "appreactfire",
+    "storage_bucket": "appreactfire.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452930975227:android:8d43a16cfd87cbb8e1c75e",
+        "android_client_info": {
+          "package_name": "dev.armando.fit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "452930975227-6sdadek87f8luvgtr69429es0g7o3hui.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.armando.fit",
+            "certificate_hash": "b9febafb4c3f6afcd7ed2511a3d252f562c82d71"
+          }
+        },
+        {
+          "client_id": "452930975227-hqa4ck08bmft9lolikim4nunansufn35.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-qUv_JsYaI703HYKDFE0AZ9TmWuo5Qec"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "452930975227-hqa4ck08bmft9lolikim4nunansufn35.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
